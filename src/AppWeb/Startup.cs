@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +34,28 @@ namespace AppWeb
             });
         }
 
+        // This method gets called when Testing Environment is used
+        // Use this method to set Testing services, like Testng database
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            // Configure in-memory database
+            services.AddDbContext<LuminuxContext>(options =>
+                options.UseInMemoryDatabase("Luminux"));
+
+            ConfigureServices(services);
+        }
+
+
+        // This method gets called when Production Environment is used
+        // Use this method to set Production services, like Production database
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<LuminuxContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("LuminuxConnection"))
+            );
+
+            ConfigureServices(services);
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

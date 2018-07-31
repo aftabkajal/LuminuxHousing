@@ -25,12 +25,13 @@ namespace AppWebapi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-            services.AddMvc();
+            // use in-memeory databses
+            ConfigureTestingServices(services);
+
+            // use real database
+            // ConfigureProductionService(services);
         }
 
         // This method gets called when Testing Environment is used
@@ -44,6 +45,7 @@ namespace AppWebapi
             ConfigureServices(services);
         }
 
+
         // This method gets called when Production Environment is used
         // Use this method to set Production services, like Production database
         public void ConfigureProductionServices(IServiceCollection services)
@@ -54,6 +56,15 @@ namespace AppWebapi
 
             ConfigureServices(services);
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+            services.AddMvc();
+        }
+  
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

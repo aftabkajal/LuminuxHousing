@@ -13,4 +13,10 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AppCore\AppCore.csproj" />
+    <ProjectReference Include="..\..\src\AppInfrastructure\AppInfrastructure.csproj" />
+    <ProjectReference Include="..\..\src\AppWebapi\AppWebapi.csproj" />
+  </ItemGroup>
+
 </Project>
